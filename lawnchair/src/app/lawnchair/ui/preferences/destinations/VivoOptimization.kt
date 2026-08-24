@@ -99,35 +99,57 @@ fun VivoOptimization(
         )
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Section 1: Google Notification Bubbles
-        PreferenceGroupHeading(heading = "Google Notification Bubbles")
+        // Section 1: Google Notification Bubbles & OriginOS Floating Windows
+        PreferenceGroupHeading(heading = "Google Notification Bubbles & Floating Hub")
         PreferenceGroup {
             ClickablePreference(
-                label = if (isBubblesEnabled) "Notification Bubbles: Enabled ✓" else "Enable Google Notification Bubbles",
+                label = if (isBubblesEnabled) "Framework Bubbles: Enabled ✓" else "Force Enable Google Bubbles (Full Command)",
                 subtitle = if (isBubblesEnabled) {
-                    "AOSP Notification Bubbles are active on your Vivo device!"
+                    "Android framework bubble flags are ON. Note: OriginOS SystemUI replaces AOSP bubbles with Small Window."
                 } else {
-                    "OriginOS hides this setting. Tap to copy the 1-line ADB command or activate via Shizuku."
+                    "Tap to copy 3-in-1 ADB command: sets secure, global & notification service flags."
                 },
                 hapticToken = MSDLToken.TAP_MEDIUM_EMPHASIS,
                 onClick = {
-                    val adbCmd = "adb shell settings put secure notification_bubbles 1"
+                    val adbCmd = "adb shell settings put secure notification_bubbles 1 && adb shell settings put global notification_bubbles 1 && adb shell cmd notification set_bubbles true"
                     val clip = ClipData.newPlainText("ADB Command", adbCmd)
                     clipboardManager?.setPrimaryClip(clip)
-                    Toast.makeText(context, "Command copied to clipboard!\n$adbCmd", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Full 3-in-1 ADB command copied to clipboard!", Toast.LENGTH_LONG).show()
                     refreshKey++
                 },
             )
 
             ClickablePreference(
-                label = "Copy Shizuku / Shell Script",
-                subtitle = "settings put secure notification_bubbles 1",
+                label = "Copy Shizuku Script (1-Tap Runner)",
+                subtitle = "settings put secure notification_bubbles 1; settings put global notification_bubbles 1; cmd notification set_bubbles true",
                 hapticToken = MSDLToken.TAP_LOW_EMPHASIS,
                 onClick = {
-                    val cmd = "settings put secure notification_bubbles 1"
-                    val clip = ClipData.newPlainText("Shell Command", cmd)
+                    val cmd = "settings put secure notification_bubbles 1; settings put global notification_bubbles 1; cmd notification set_bubbles true"
+                    val clip = ClipData.newPlainText("Shizuku Command", cmd)
                     clipboardManager?.setPrimaryClip(clip)
-                    Toast.makeText(context, "Shell command copied: $cmd", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Shizuku command copied!", Toast.LENGTH_SHORT).show()
+                },
+            )
+
+            ClickablePreference(
+                label = "Vivo Small Window & Floating Permission",
+                subtitle = "OriginOS handles floating chats through Small Window. Tap to open Vivo Floating Window settings.",
+                hapticToken = MSDLToken.TAP_MEDIUM_EMPHASIS,
+                onClick = {
+                    try {
+                        val intent = Intent().setClassName("com.vivo.permissionmanager", "com.vivo.permissionmanager.activity.PurviewTabActivity")
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        context.startActivity(intent)
+                    } catch (e: Exception) {
+                        try {
+                            val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:${context.packageName}"))
+                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            context.startActivity(intent)
+                        } catch (e2: Exception) {
+                            Toast.makeText(context, "Unable to open Vivo floating settings directly", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    refreshKey++
                 },
             )
         }
