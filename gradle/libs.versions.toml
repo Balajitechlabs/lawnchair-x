@@ -13,6 +13,7 @@ dagger = "2.60.1"
 libsu = "6.0.0"
 refine = "4.4.0"
 exifinterface = "1.4.2"
+shizuku = "13.1.5"
 
 guava = "33.7.1-jre"
 junitVersion = "4.13.2"
@@ -146,6 +147,8 @@ ktlint = "com.pinterest.ktlint:ktlint-cli:1.8.0"
 composeRules = "io.nlopez.compose.rules:ktlint:0.6.4"
 google-guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
 androidx-exifinterface = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exifinterface" }
+shizuku-api = { group = "dev.rikka.shizuku", name = "api", version.ref = "shizuku" }
+shizuku-provider = { group = "dev.rikka.shizuku", name = "provider", version.ref = "shizuku" }
 
 # Testing (Merged)
 google-truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }

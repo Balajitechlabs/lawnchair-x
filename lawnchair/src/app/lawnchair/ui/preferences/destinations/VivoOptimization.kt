@@ -99,35 +99,61 @@ fun VivoOptimization(
         )
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Section 1: Google Notification Bubbles & OriginOS Floating Windows
-        PreferenceGroupHeading(heading = "Google Notification Bubbles & Floating Hub")
+        // Section 1: Google Notification Bubbles & Native Shizuku Automation
+        PreferenceGroupHeading(heading = "Google Notification Bubbles & Shizuku Hub")
         PreferenceGroup {
+            val hasShizukuPermission = app.lawnchair.shizuku.ShizukuUtils.hasPermission()
+            val isShizukuRunning = app.lawnchair.shizuku.ShizukuUtils.isShizukuAvailable()
+
             ClickablePreference(
-                label = if (isBubblesEnabled) "Framework Bubbles: Enabled ✓" else "Force Enable Google Bubbles (Full Command)",
-                subtitle = if (isBubblesEnabled) {
-                    "Android framework bubble flags are ON. Note: OriginOS SystemUI replaces AOSP bubbles with Small Window."
+                label = if (isBubblesEnabled && hasShizukuPermission) {
+                    "Native Shizuku & Bubbles: Active ✓"
+                } else if (hasShizukuPermission) {
+                    "1-Tap Force Enable via Shizuku"
+                } else if (isShizukuRunning) {
+                    "Grant Shizuku Permission"
                 } else {
-                    "Tap to copy 3-in-1 ADB command: sets secure, global & notification service flags."
+                    "Open Shizuku Service"
+                },
+                subtitle = when {
+                    isBubblesEnabled && hasShizukuPermission -> "Bubbles & WRITE_SECURE_SETTINGS active via Shizuku!"
+                    hasShizukuPermission -> "Tap to automatically execute elevated bubble configuration."
+                    isShizukuRunning -> "Shizuku is running. Tap to authorize Lawnchair."
+                    else -> "Launch Shizuku manager to start the privileged wireless ADB service."
                 },
                 hapticToken = MSDLToken.TAP_MEDIUM_EMPHASIS,
+                onClick = {
+                    if (!isShizukuRunning) {
+                        val shizukuIntent = context.packageManager.getLaunchIntentForPackage("moe.shizuku.privileged.api")
+                        if (shizukuIntent != null) {
+                            context.startActivity(shizukuIntent)
+                        } else {
+                            Toast.makeText(context, "Shizuku app not found. Please install Shizuku.", Toast.LENGTH_SHORT).show()
+                        }
+                    } else if (!hasShizukuPermission) {
+                        app.lawnchair.shizuku.ShizukuUtils.requestPermission()
+                    } else {
+                        val success = app.lawnchair.shizuku.ShizukuUtils.forceEnableGoogleBubbles(context)
+                        if (success) {
+                            Toast.makeText(context, "Google Bubbles & Permissions activated via Shizuku!", Toast.LENGTH_LONG).show()
+                        } else {
+                            Toast.makeText(context, "Shizuku execution failed. Please check Shizuku status.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    refreshKey++
+                },
+            )
+
+            ClickablePreference(
+                label = "Manual ADB Script Copier",
+                subtitle = "adb shell settings put secure notification_bubbles 1 && adb shell cmd notification set_bubbles true",
+                hapticToken = MSDLToken.TAP_LOW_EMPHASIS,
                 onClick = {
                     val adbCmd = "adb shell settings put secure notification_bubbles 1 && adb shell settings put global notification_bubbles 1 && adb shell cmd notification set_bubbles true"
                     val clip = ClipData.newPlainText("ADB Command", adbCmd)
                     clipboardManager?.setPrimaryClip(clip)
                     Toast.makeText(context, "Full 3-in-1 ADB command copied to clipboard!", Toast.LENGTH_LONG).show()
                     refreshKey++
-                },
-            )
-
-            ClickablePreference(
-                label = "Copy Shizuku Script (1-Tap Runner)",
-                subtitle = "settings put secure notification_bubbles 1; settings put global notification_bubbles 1; cmd notification set_bubbles true",
-                hapticToken = MSDLToken.TAP_LOW_EMPHASIS,
-                onClick = {
-                    val cmd = "settings put secure notification_bubbles 1; settings put global notification_bubbles 1; cmd notification set_bubbles true"
-                    val clip = ClipData.newPlainText("Shizuku Command", cmd)
-                    clipboardManager?.setPrimaryClip(clip)
-                    Toast.makeText(context, "Shizuku command copied!", Toast.LENGTH_SHORT).show()
                 },
             )
 
