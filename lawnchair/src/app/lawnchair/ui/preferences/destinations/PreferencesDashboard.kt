@@ -136,7 +136,7 @@ fun PreferencesDashboard(
             PreferenceCategory(
                 label = "Vivo & OriginOS Hub",
                 description = "Google Bubbles, 120Hz physics, battery & permissions",
-                iconResource = R.drawable.ic_speed,
+                iconResource = R.drawable.ic_settings_monochrome,
                 onNavigate = { onNavigate(VivoOptimization) },
                 isSelected = currentRoute is VivoOptimization,
             )
