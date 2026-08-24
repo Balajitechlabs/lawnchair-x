@@ -11,9 +11,10 @@ val gestureHandlerOptions = listOf(
     GestureHandlerOption.OpenQuickSettings,
     GestureHandlerOption.OpenAppDrawer,
     GestureHandlerOption.OpenAppSearch,
-    GestureHandlerOption.OpenSearch,
     GestureHandlerOption.OpenApp,
     GestureHandlerOption.OpenAssistant,
+    GestureHandlerOption.OpenQuickDash,
+    GestureHandlerOption.OpenFastPayUpi,
 )
 
 private val optionsDisabledInDeckLayout = setOf(

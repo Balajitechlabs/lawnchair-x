@@ -7,6 +7,7 @@ import android.graphics.drawable.Icon
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.createBitmap
+import app.lawnchair.gestures.handlers.FastPayUpiGestureHandler
 import app.lawnchair.gestures.handlers.GestureHandler
 import app.lawnchair.gestures.handlers.NoOpGestureHandler
 import app.lawnchair.gestures.handlers.OpenAppDrawerGestureHandler
@@ -17,6 +18,7 @@ import app.lawnchair.gestures.handlers.OpenAssistantHandler
 import app.lawnchair.gestures.handlers.OpenNotificationsHandler
 import app.lawnchair.gestures.handlers.OpenQuickSettingsHandler
 import app.lawnchair.gestures.handlers.OpenSearchGestureHandler
+import app.lawnchair.gestures.handlers.QuickDashGestureHandler
 import app.lawnchair.gestures.handlers.RecentsGestureHandler
 import app.lawnchair.gestures.handlers.SleepGestureHandler
 import app.lawnchair.theme.color.tokens.ColorTokens
@@ -127,6 +129,20 @@ sealed class GestureHandlerConfig {
     data object OpenAssistant :
         Simple(R.string.gesture_handler_open_assistant, ::OpenAssistantHandler) {
         override val iconRes = R.drawable.ic_mic_flat
+    }
+
+    @Serializable
+    @SerialName("openQuickDash")
+    data object OpenQuickDash :
+        Simple(R.string.gesture_handler_open_quickdash, ::QuickDashGestureHandler) {
+        override val iconRes = R.drawable.ic_apps
+    }
+
+    @Serializable
+    @SerialName("openFastPayUpi")
+    data object OpenFastPayUpi :
+        Simple(R.string.gesture_handler_open_fastpay, ::FastPayUpiGestureHandler) {
+        override val iconRes = R.drawable.ic_charging
     }
 
     @Serializable

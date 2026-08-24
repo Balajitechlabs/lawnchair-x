@@ -226,5 +226,74 @@ fun VivoOptimization(
                 },
             )
         }
+
+        // Section 4: QuickDash & FastPay Ecosystem
+        PreferenceGroupHeading(heading = "QuickDash & FastPay Ecosystem")
+        PreferenceGroup {
+            ClickablePreference(
+                label = "Launch QuickDash Floating Overlay",
+                subtitle = "Summon your floating QuickDash multi-tool companion hub",
+                hapticToken = MSDLToken.TAP_MEDIUM_EMPHASIS,
+                onClick = {
+                    val pkg = "com.balajitechlabs.quickdash"
+                    val launchIntent = context.packageManager.getLaunchIntentForPackage(pkg)
+                    if (launchIntent != null) {
+                        launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        context.startActivity(launchIntent)
+                    } else {
+                        Toast.makeText(
+                            context,
+                            "QuickDash not installed. Opening quickdash.balajitechlab.com",
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                        val webIntent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://quickdash.balajitechlab.com"),
+                        ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        try {
+                            context.startActivity(webIntent)
+                        } catch (e: Exception) {
+                            // Ignore fallback error
+                        }
+                    }
+                },
+            )
+
+            ClickablePreference(
+                label = "Instant FastPay UPI QR Scanner",
+                subtitle = "Direct 1-tap trigger for GPay, PhonePe, or Paytm QR scanner",
+                hapticToken = MSDLToken.TAP_LOW_EMPHASIS,
+                onClick = {
+                    val upiPkgs = listOf(
+                        "com.google.android.apps.nbu.paisa.user",
+                        "com.phonepe.app",
+                        "net.one97.paytm",
+                    )
+                    var opened = false
+                    for (pkg in upiPkgs) {
+                        val launchIntent = context.packageManager.getLaunchIntentForPackage(pkg)
+                        if (launchIntent != null) {
+                            launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            try {
+                                context.startActivity(launchIntent)
+                                opened = true
+                                break
+                            } catch (e: Exception) {
+                                // Try next
+                            }
+                        }
+                    }
+                    if (!opened) {
+                        try {
+                            val cameraIntent = Intent(android.provider.MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA)
+                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            context.startActivity(cameraIntent)
+                        } catch (e: Exception) {
+                            Toast.makeText(context, "No UPI or Camera app found", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                },
+            )
+        }
     }
 }
