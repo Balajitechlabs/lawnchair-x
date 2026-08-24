@@ -100,7 +100,7 @@ fun VivoOptimization(
         Spacer(modifier = Modifier.height(12.dp))
 
         // Section 1: Google Notification Bubbles
-        PreferenceGroupHeading(label = "Google Notification Bubbles")
+        PreferenceGroupHeading(heading = "Google Notification Bubbles")
         PreferenceGroup {
             ClickablePreference(
                 label = if (isBubblesEnabled) "Notification Bubbles: Enabled ✓" else "Enable Google Notification Bubbles",
@@ -133,7 +133,7 @@ fun VivoOptimization(
         }
 
         // Section 2: Core System Permissions
-        PreferenceGroupHeading(label = "Essential System Roles")
+        PreferenceGroupHeading(heading = "Essential System Roles")
         PreferenceGroup {
             ClickablePreference(
                 label = if (isHomeDefault) "Default Launcher: Active ✓" else "Set as Default Home App",
@@ -213,7 +213,7 @@ fun VivoOptimization(
         }
 
         // Section 3: Vivo Display & Motion Calibration
-        PreferenceGroupHeading(label = "Vivo 120Hz & Display Calibration")
+        PreferenceGroupHeading(heading = "Vivo 120Hz & Display Calibration")
         PreferenceGroup {
             ClickablePreference(
                 label = "Display Refresh Rate (120Hz)",
