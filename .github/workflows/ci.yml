@@ -27,7 +27,7 @@ on:
   workflow_call:
 
 env:
-  PUBLISH_NIGHTLY: true
+  PUBLISH_NIGHTLY: false
 
 jobs:
   build-debug-apk:
@@ -57,12 +57,15 @@ jobs:
             echo ${{ secrets.KEYSTORE }} | base64 --decode > ${{ github.workspace }}/key.jks
           fi
       - name: Build APK
-        run: ./gradlew ${{ matrix.build-variant }}
+        run: ./gradlew ${{ matrix.build-variant }} --stacktrace
       - name: Upload artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.build-variant }}
-          path: build/outputs/apk/**/*.apk
+          name: Lawnchair-${{ matrix.build-variant }}
+          path: |
+            build/outputs/apk/**/*.apk
+            lawnchair/build/outputs/apk/**/*.apk
+          if-no-files-found: warn
 
   check-style:
     runs-on: ubuntu-latest

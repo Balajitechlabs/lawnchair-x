@@ -86,6 +86,7 @@ import app.lawnchair.ui.preferences.navigation.PreferenceRootRoute
 import app.lawnchair.ui.preferences.navigation.Quickstep
 import app.lawnchair.ui.preferences.navigation.Search
 import app.lawnchair.ui.preferences.navigation.Smartspace
+import app.lawnchair.ui.preferences.navigation.VivoOptimization
 import app.lawnchair.ui.util.addIf
 import app.lawnchair.util.isDefaultLauncher
 import app.lawnchair.util.restartLauncher
@@ -132,6 +133,14 @@ fun PreferencesDashboard(
 
         val deckLayout = prefs2.deckLayout.getAdapter()
         PreferenceGroup {
+            PreferenceCategory(
+                label = "Vivo & OriginOS Hub",
+                description = "Google Bubbles, 120Hz physics, battery & permissions",
+                iconResource = R.drawable.ic_speed,
+                onNavigate = { onNavigate(VivoOptimization) },
+                isSelected = currentRoute is VivoOptimization,
+            )
+
             PreferenceCategory(
                 label = stringResource(R.string.general_label),
                 description = stringResource(R.string.general_description),

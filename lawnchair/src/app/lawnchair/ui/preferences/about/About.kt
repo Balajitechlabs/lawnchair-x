@@ -234,6 +234,59 @@ fun About(
         }
         item {
             PreferenceGroupHeading(
+                "BalajiTechLabs Custom Edition",
+            )
+        }
+        item {
+            PreferenceGroupItem(
+                cutTop = false,
+                cutBottom = true,
+            ) {
+                ClickablePreference(
+                    label = "Personal Custom Build (Vivo V60e)",
+                    subtitle = "Disclaimer: Built strictly for personal use on Vivo V60e (OriginOS). Not an official Lawnchair release.",
+                    onClick = {},
+                )
+            }
+        }
+        item {
+            Spacer(Modifier.height(3.dp))
+        }
+        item {
+            PreferenceGroupItem(
+                cutTop = true,
+                cutBottom = true,
+            ) {
+                ClickablePreference(
+                    label = "QuickDash Utility Hub",
+                    subtitle = "Floating Android overlay with 20+ modular tools by BalajiTechLabs",
+                    onClick = {
+                        val uri = "https://quickdash.balajitechlab.com".toUri()
+                        context.startActivity(Intent(Intent.ACTION_VIEW, uri))
+                    },
+                )
+            }
+        }
+        item {
+            Spacer(Modifier.height(3.dp))
+        }
+        item {
+            PreferenceGroupItem(
+                cutTop = true,
+                cutBottom = false,
+            ) {
+                ClickablePreference(
+                    label = "Developer Portfolio",
+                    subtitle = "balajitechlab.com • Tailored for Vivo V60e",
+                    onClick = {
+                        val uri = "https://balajitechlab.com".toUri()
+                        context.startActivity(Intent(Intent.ACTION_VIEW, uri))
+                    },
+                )
+            }
+        }
+        item {
+            PreferenceGroupHeading(
                 stringResource(R.string.legal),
             )
         }

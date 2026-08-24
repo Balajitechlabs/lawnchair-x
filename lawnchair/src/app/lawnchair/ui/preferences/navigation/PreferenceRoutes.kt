@@ -98,6 +98,11 @@ data object About : PreferenceRootRoute, PreferenceDeepLink {
 }
 
 @Serializable
+data object VivoOptimization : PreferenceRootRoute, PreferenceDeepLink {
+    override val deepLink = "$URI/vivo-optimization"
+}
+
+@Serializable
 data object ExperimentalFeatures : PreferenceRootRoute, PreferenceDeepLink {
     override val deepLink = "$URI/experimental-features"
 }

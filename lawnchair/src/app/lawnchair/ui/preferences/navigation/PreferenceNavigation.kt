@@ -203,6 +203,10 @@ fun PreferenceNavigation(
             deepLinks = getDeepLink(AboutLicenses),
         ) { Acknowledgements() }
 
+        composable<VivoOptimization>(
+            deepLinks = getDeepLink(VivoOptimization),
+        ) { app.lawnchair.ui.preferences.destinations.VivoOptimization() }
+
         composable<DebugMenu> { DebugMenuPreferences() }
         composable<FeatureFlags> { FeatureFlagsPreference() }
 
